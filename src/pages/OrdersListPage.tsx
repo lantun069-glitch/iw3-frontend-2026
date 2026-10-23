@@ -119,7 +119,7 @@ export function OrdersListPage() {
         >
           <option value="">Todas</option>
           <option value="1">1 - Recibida</option>
-          <option value="2">2 - En carga</option>
+          <option value="2">2 - Tara registrada</option>
           <option value="3">3 - Cerrada</option>
           <option value="4">4 - Finalizada</option>
         </select>
