@@ -1,0 +1,58 @@
+.orders-list-page {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+}
+
+.orders-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.orders-toolbar button {
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+
+.orders-error {
+  color: #b00020;
+}
+
+.orders-empty {
+  color: #555;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.orders-sort-button {
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.orders-pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.orders-pagination button {
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}

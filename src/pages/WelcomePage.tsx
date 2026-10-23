@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import './WelcomePage.css'
 
@@ -20,6 +21,9 @@ export function WelcomePage() {
         Roles (solo para mostrar; la autorización real la aplica el backend en cada
         operación):{' '}
         <strong>{roles.length > 0 ? roles.join(', ') : 'sin roles asignados'}</strong>
+      </p>
+      <p>
+        <Link to="/ordenes">Ver órdenes</Link>
       </p>
       <button onClick={logout}>Cerrar sesión</button>
     </main>
