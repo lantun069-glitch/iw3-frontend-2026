@@ -53,6 +53,52 @@ export function formatearEta(estado: number, etaMinutos: number | null): string 
   return `${etaMinutos.toFixed(2)} min`
 }
 
+/**
+ * TP35 (F7): formato numerico español (miles con punto, decimales con
+ * coma, cantidad fija de decimales segun la precision DECIMAL de la
+ * columna de origen - un numero JSON no conserva esa escala). Se usa
+ * en toda la pantalla de conciliacion para no mezclar "80.000" (que
+ * en es-AR se leeria como ochenta mil) con el formato real del dato.
+ */
+function formatearNumeroEs(valor: number | null, decimales: number): string {
+  if (valor === null) {
+    return 'Sin datos'
+  }
+  return valor.toLocaleString('es-AR', { minimumFractionDigits: decimales, maximumFractionDigits: decimales })
+}
+
+export function formatearPesoKg(valor: number | null): string {
+  return valor === null ? 'Sin datos' : `${formatearNumeroEs(valor, 3)} kg`
+}
+
+export function formatearTemperaturaC(valor: number | null): string {
+  return valor === null ? 'Sin datos' : `${formatearNumeroEs(valor, 2)} °C`
+}
+
+/** Sin unidad: no confirmada por la fuente, ver docs/fuentes.md (DATO FALTANTE). */
+export function formatearDensidad(valor: number | null): string {
+  return formatearNumeroEs(valor, 4)
+}
+
+export function formatearCaudalKgH(valor: number | null): string {
+  return valor === null ? 'Sin datos' : `${formatearNumeroEs(valor, 3)} kg/h`
+}
+
+/**
+ * TP35 (F7): diferencia de conciliacion con signo explicito y formato
+ * numerico español (ver formatearNumeroEs) - nunca se oculta el signo
+ * ni se redondea a un valor distinto al recibido. Presentacion
+ * neutral: una diferencia != 0 no es un rechazo automatico (no hay
+ * tolerancia exigida por la fuente).
+ */
+export function formatearDiferenciaKg(valor: number | null): string {
+  if (valor === null) {
+    return 'Sin datos'
+  }
+  const signo = valor < 0 ? '-' : valor > 0 ? '+' : ''
+  return `${signo}${formatearNumeroEs(Math.abs(valor), 3)} kg`
+}
+
 /** Porcentaje con denominador explicito y sin division por cero. */
 export function calcularPorcentaje(cantidad: number, total: number): number {
   if (total <= 0) {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { listarOrdenes, type OrdenResumen } from '../api/ordersApi'
 import { EstadoBadge } from '../components/EstadoBadge'
 import { ESTADO_LABELS } from '../domain/estados'
@@ -44,9 +44,17 @@ export function OrdersListPage() {
     const desdeUrl = searchParams.get('estado')
     return desdeUrl !== null && desdeUrl in ESTADO_LABELS ? desdeUrl : ''
   })
-  const [page, setPage] = useState(0)
-  const [sortCampo, setSortCampo] = useState('orderNumber')
-  const [sortDireccion, setSortDireccion] = useState<Direccion>('asc')
+  const [page, setPage] = useState<number>(() => {
+    const desdeUrl = Number(searchParams.get('page'))
+    return Number.isInteger(desdeUrl) && desdeUrl >= 0 ? desdeUrl : 0
+  })
+  const [sortCampo, setSortCampo] = useState<string>(() => {
+    const campo = searchParams.get('sort')?.split(',')[0]
+    return campo && CAMPOS_ORDENABLES.some((c) => c.campo === campo) ? campo : 'orderNumber'
+  })
+  const [sortDireccion, setSortDireccion] = useState<Direccion>(() => {
+    return searchParams.get('sort')?.split(',')[1] === 'desc' ? 'desc' : 'asc'
+  })
 
   const [content, setContent] = useState<OrdenResumen[]>([])
   const [totalPages, setTotalPages] = useState(0)
@@ -120,6 +128,26 @@ export function OrdersListPage() {
     setPage(0)
   }
 
+  /**
+   * URL de este listado con el filtro/página/orden actuales (TP35):
+   * se pasa como estado de navegación al abrir una conciliación, para
+   * que "Volver a órdenes" no pierda con qué se llegó hasta ahí.
+   */
+  function construirUrlListado(): string {
+    const params = new URLSearchParams()
+    if (estadoFiltro !== '') {
+      params.set('estado', estadoFiltro)
+    }
+    if (page > 0) {
+      params.set('page', String(page))
+    }
+    if (sortCampo !== 'orderNumber' || sortDireccion !== 'asc') {
+      params.set('sort', `${sortCampo},${sortDireccion}`)
+    }
+    const query = params.toString()
+    return query ? `/ordenes?${query}` : '/ordenes'
+  }
+
   return (
     <main className="orders-list-page" id="contenido">
       <h1>Órdenes</h1>
@@ -176,6 +204,7 @@ export function OrdersListPage() {
                 <th>Caudal (kg/h)</th>
                 <th>Tiempo transcurrido</th>
                 <th>ETA</th>
+                <th>Conciliación</th>
               </tr>
             </thead>
             <tbody>
@@ -194,6 +223,19 @@ export function OrdersListPage() {
                   <td className="num">{formatearNumero(orden.ultimoCaudalKgH)}</td>
                   <td className="num">{formatearTranscurrido(orden.estado, orden.fechaInicioCarga)}</td>
                   <td className="num">{formatearEta(orden.estado, orden.etaMinutos)}</td>
+                  <td>
+                    {orden.estado === 4 ? (
+                      <Link
+                        to={`/ordenes/${orden.orderNumber}/conciliacion`}
+                        state={{ volver: construirUrlListado() }}
+                        className="btn-link"
+                      >
+                        Ver conciliación
+                      </Link>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

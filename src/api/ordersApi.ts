@@ -93,6 +93,45 @@ export async function obtenerResumenEstados(signal?: AbortSignal): Promise<Resum
 }
 
 /**
+ * Conciliacion de una orden finalizada (TP35, F7). Coincide con
+ * ConciliacionResponse del backend. ultimaTemperaturaC/ultimaDensidad/
+ * ultimoCaudalKgH son el ULTIMO VALOR del snapshot (no un promedio);
+ * promedioTemperaturaC/promedioDensidad/promedioCaudalKgH son el
+ * promedio sobre el detalle ALMACENADO de la orden - distintos
+ * conceptos, nunca mostrar uno como si fuera el otro. Cualquier campo
+ * puede ser null (ver docs/contrato-f7-conciliacion-ui.md): se
+ * muestra "Sin datos", nunca 0. densidad/ultimaDensidad/
+ * promedioDensidad no tienen unidad confirmada - no se etiqueta como
+ * "adimensional" ni se inventa una (ver docs/fuentes.md, DATO
+ * FALTANTE).
+ */
+export interface ConciliacionOrden {
+  orderNumber: number
+  taraKg: number | null
+  pesoBrutoKg: number | null
+  netoKg: number | null
+  productoCargadoKg: number | null
+  diferenciaKg: number | null
+  ultimaTemperaturaC: number | null
+  ultimaDensidad: number | null
+  ultimoCaudalKgH: number | null
+  promedioTemperaturaC: number | null
+  promedioDensidad: number | null
+  promedioCaudalKgH: number | null
+}
+
+/**
+ * GET /api/v1/orders/{orderNumber}/conciliacion (backend, F4/F6, sin
+ * cambios para esta unidad). Solo responde 200 si la orden existe y
+ * esta en estado 4 - 404/409 se propagan para que el llamador los
+ * distinga explicitamente (ver ConciliacionPage).
+ */
+export async function obtenerConciliacion(orderNumber: number, signal?: AbortSignal): Promise<ConciliacionOrden> {
+  const response = await httpClient.get<ConciliacionOrden>(`/api/v1/orders/${orderNumber}/conciliacion`, { signal })
+  return response.data
+}
+
+/**
  * Ordenes con lectura mas reciente, para el inicio. Reutiliza
  * GET /api/v1/orders con sort=fechaUltimaLectura,desc (mismo campo
  * ordenable que ya valida/expone TP31, no hay endpoint nuevo) y

@@ -1,0 +1,156 @@
+.conciliacion-page {
+  margin: var(--space-8) 0;
+  padding: 0 var(--space-6);
+}
+
+.conciliacion-header {
+  margin-bottom: var(--space-6);
+}
+
+.conciliacion-volver {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  font-size: 0.85rem;
+}
+
+.conciliacion-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.conciliacion-titulo h1 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.conciliacion-cargando {
+  color: var(--color-text-muted);
+}
+
+/* Resumen destacado: neto, producto cargado, diferencia */
+.conciliacion-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.conciliacion-resumen-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.conciliacion-resumen-valor {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.conciliacion-resumen-etiqueta {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.conciliacion-bloque {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+}
+
+.conciliacion-bloque:last-child {
+  margin-bottom: 0;
+}
+
+.conciliacion-bloque h2 {
+  margin: 0 0 var(--space-2) 0;
+  font-size: 1rem;
+}
+
+.conciliacion-nota {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* Desglose "Peso bruto - Tara = Neto" */
+.conciliacion-desglose {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.conciliacion-operador {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.conciliacion-desglose-resultado {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Tabla comparativa de telemetria */
+.conciliacion-tabla-wrap {
+  overflow-x: auto;
+}
+
+.conciliacion-comparativa {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.conciliacion-comparativa th,
+.conciliacion-comparativa td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.conciliacion-comparativa thead th {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Las columnas numericas alinean su encabezado igual que sus valores
+   (td.num es text-align:right) - solo la primera columna ("Variable")
+   queda a la izquierda, igual que las filas (tbody th). */
+.conciliacion-comparativa thead th:not(:first-child) {
+  text-align: right;
+}
+
+.conciliacion-comparativa tbody th {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.conciliacion-comparativa td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .conciliacion-desglose {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+}
