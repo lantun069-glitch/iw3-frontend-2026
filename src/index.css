@@ -1,0 +1,15 @@
+/* Estilos globales minimos (F7, primera unidad): una sola solucion de
+   estilos para todo el proyecto (CSS simple, sin biblioteca de UI
+   completa). Cada pantalla tiene su propio archivo .css con las
+   clases que usa; esto solo fija el reset basico y la tipografia. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
+  background-color: #fafafa;
+}
