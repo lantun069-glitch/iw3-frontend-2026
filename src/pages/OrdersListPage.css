@@ -107,9 +107,18 @@
   background-color: var(--color-bg);
 }
 
+.orders-table th.num,
 .orders-table td.num {
   text-align: right;
+}
+
+.orders-table td.num {
   font-variant-numeric: tabular-nums;
+}
+
+.orders-table th.centro,
+.orders-table td.centro {
+  text-align: center;
 }
 
 .orders-sort-button {

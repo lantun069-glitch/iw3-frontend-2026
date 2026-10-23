@@ -189,14 +189,87 @@ inicio, el panel "Pendientes del circuito", la tabla de lecturas
 recientes, ni la tabla de órdenes en pantalla angosta/amplia real,
 porque no hay evidencia puntual de esos casos todavía.
 
+## Evidencia manual del usuario — segunda ronda (2026-10-23)
+
+Confirmado en navegador real:
+
+- Header y login completos en ventana angosta, sin solapamientos
+  (**no equivale a probar todos los tamaños de pantalla móvil real**,
+  solo la ventana angosta probada).
+- Tabla de Órdenes: el scroll horizontal permite acceder a todas las
+  columnas sin recortar contenido.
+- Panel "Pendientes del circuito" del inicio: cada tarjeta navega al
+  filtro correcto en Órdenes (Recibida y Cerrada confirmadas).
+
+## Evidencia manual del usuario — caso de error real (2026-10-23)
+
+Confirmado deteniendo el backend real (mismo proceso de siempre, sin
+tocar MySQL ni ningún dato; restaurado después con la misma
+configuración, incluido el SMTP local):
+
+- **Órdenes:** al tocar "Actualizar" con el backend detenido, muestra
+  el error 500, **conserva la tabla ya cargada en pantalla** y
+  mantiene la sesión activa (no desloguea).
+- **Inicio:** al entrar con el backend detenido, muestra "Error al
+  consultar el resumen de órdenes (código 500)", **sin tarjetas ni
+  ceros ficticios**, y mantiene la sesión activa.
+
+**No se registra** que Inicio conserve un resumen previo cargado
+antes del error (ese caso puntual - entrar ya con datos en pantalla y
+que después falle una actualización - no se probó).
+
+## Evidencia manual del usuario — recuperación tras el error (2026-10-23)
+
+Confirmado tras restaurar el backend real con la misma configuración
+y tocar "Actualizar" en Inicio: el error desaparece, reaparecen las
+90 órdenes reales (tarjetas/gráfico) y la sesión se mantiene durante
+todo el ciclo error → recuperación. La tabla "Lecturas más recientes"
+se ve completa, con sus 5 filas. (Sigue sin probarse el caso distinto
+de si Inicio retiene un resumen previo *mientras* una actualización
+está fallando, sin llegar todavía a recuperarse - ver nota arriba.)
+
+## Evidencia manual del usuario — demora/throttling (2026-10-23)
+
+Confirmado con la conexión limitada (Firefox DevTools, Network →
+throttling, restaurado a "Sin estrangulamiento" después): el botón
+quedó en "Actualizando…" durante la demora y, al terminar, reapareció
+el resumen con las 90 órdenes reales, con la sesión activa durante
+todo el ciclo.
+
+## Evidencia manual del usuario — vacío simulado (2026-10-23)
+
+Confirmado con el mock temporal (ver abajo, nunca contra el backend
+real - `total === 0` no se puede lograr con datos reales, hay 90
+órdenes de prueba ya creadas): Inicio muestra **"No hay órdenes
+registradas todavía."** y **oculta tarjetas, gráfico y la tabla de
+recientes** (no las muestra en cero) — corrige una suposición
+anterior de este documento, que especulaba "tarjetas en cero" sin
+haberlo probado todavía. Sin errores visibles, sin datos residuales
+de la sesión anterior, sesión mantenida.
+
 ## Pendiente explícito
 
-Revisión visual conjunta con el usuario de los casos sin evidencia
-todavía: header responsive en mobile, login, estados de carga/error/
-vacío del inicio, panel de pendientes y tabla de lecturas recientes
-(interacción y datos reales en pantalla), y la tabla de órdenes en
-una pantalla amplia real (sin scroll) y en una angosta real (con
-scroll, sin columnas ocultas). No reemplaza la revisión visual
-pendiente de TP32/TP33 (ver `docs/contrato-f7-tiempos-carga.md`), que
-sigue aparte. Panel de alarmas: deliberadamente no incluido, queda
-para su propia unidad.
+**Límite no bloqueante, sin ejercitar:** no se comprobó si Inicio
+conserva un resumen previo mientras una actualización *posterior*
+está fallando (distinto de la recuperación ya confirmada, que parte
+de un estado de error, no de uno con datos ya cargados). No bloquea
+ningún cierre, solo no se marca como probado. No reemplaza la
+revisión visual pendiente de TP32/TP33 (ver
+`docs/contrato-f7-tiempos-carga.md`), que sigue aparte. Con esto,
+error/demora/vacío de Inicio quedan los tres con evidencia manual
+real — el de vacío, puntualmente, **vía un mock temporal, no contra
+el backend real ni la base de datos real** (ver sección anterior).
+
+## Mecanismo usado para el caso vacío (ya retirado)
+
+Mock HTTP temporal en `/tmp` (fuera del repositorio - no es código
+del producto, no se versionó, no tocó la BD ni registró el token
+recibido), escuchando únicamente en `127.0.0.1:8080` mientras el
+backend real estuvo detenido. Respondía `GET /api/v1/orders` con
+`content: []` y `totalElements`/`totalPages: 0` para cualquier
+combinación de filtro/paginación/orden - cubrió las 5 llamadas del
+resumen y la de "lecturas más recientes" con el mismo contrato que el
+backend real (mismos nombres de campo). **Fue puramente una
+simulación**, nunca evidencia contra el backend real. Retirado y
+backend real restaurado con la misma configuración (incluido el SMTP
+local) tras la comprobación visual de arriba.

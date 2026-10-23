@@ -12,12 +12,16 @@ import './OrdersListPage.css'
  * que CAMPOS_ORDENABLES en OrdenBusiness.listarOrdenes del backend -
  * un valor fuera de esta lista ya no llega a pedirse, pero el backend
  * la vuelve a validar igual (nunca confiar solo en el cliente).
+ *
+ * `clase` fija la alineación de este encabezado para que coincida con
+ * sus celdas (identificadores/texto a la izquierda por default, sin
+ * clase; `num` a la derecha; `centro` centrado) - ver OrdersListPage.css.
  */
-const CAMPOS_ORDENABLES: { campo: string; etiqueta: string }[] = [
+const CAMPOS_ORDENABLES: { campo: string; etiqueta: string; clase?: string }[] = [
   { campo: 'orderNumber', etiqueta: 'Orden' },
-  { campo: 'estado', etiqueta: 'Estado' },
-  { campo: 'presetKg', etiqueta: 'Preset (kg)' },
-  { campo: 'masaAcumuladaKg', etiqueta: 'Masa acumulada (kg)' },
+  { campo: 'estado', etiqueta: 'Estado', clase: 'centro' },
+  { campo: 'presetKg', etiqueta: 'Preset (kg)', clase: 'num' },
+  { campo: 'masaAcumuladaKg', etiqueta: 'Masa acumulada (kg)', clase: 'num' },
   { campo: 'fechaUltimaLectura', etiqueta: 'Última lectura' },
 ]
 
@@ -190,8 +194,12 @@ export function OrdersListPage() {
             <caption className="visually-hidden">Listado de órdenes de carga, paginado y filtrable</caption>
             <thead>
               <tr>
-                {CAMPOS_ORDENABLES.map(({ campo, etiqueta }) => (
-                  <th key={campo} aria-sort={sortCampo === campo ? (sortDireccion === 'asc' ? 'ascending' : 'descending') : 'none'}>
+                {CAMPOS_ORDENABLES.map(({ campo, etiqueta, clase }) => (
+                  <th
+                    key={campo}
+                    className={clase}
+                    aria-sort={sortCampo === campo ? (sortDireccion === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  >
                     <button type="button" className="orders-sort-button" onClick={() => handleOrdenarPor(campo)}>
                       {etiqueta}
                       {sortCampo === campo ? (sortDireccion === 'asc' ? ' ▲' : ' ▼') : ''}
@@ -199,20 +207,20 @@ export function OrdersListPage() {
                   </th>
                 ))}
                 <th>Patente</th>
-                <th>Temperatura (°C)</th>
-                <th>Densidad</th>
-                <th>Caudal (kg/h)</th>
-                <th>Tiempo transcurrido</th>
-                <th>ETA</th>
-                <th>Conciliación</th>
-                <th>Alarmas</th>
+                <th className="num">Temperatura (°C)</th>
+                <th className="num">Densidad</th>
+                <th className="num">Caudal (kg/h)</th>
+                <th className="num">Tiempo transcurrido</th>
+                <th className="num">ETA</th>
+                <th className="centro">Conciliación</th>
+                <th className="centro">Alarmas</th>
               </tr>
             </thead>
             <tbody>
               {content.map((orden) => (
                 <tr key={orden.orderNumber}>
                   <td>{orden.orderNumber}</td>
-                  <td>
+                  <td className="centro">
                     <EstadoBadge estado={orden.estado} />
                   </td>
                   <td className="num">{formatearNumero(orden.presetKg)}</td>
@@ -224,7 +232,7 @@ export function OrdersListPage() {
                   <td className="num">{formatearNumero(orden.ultimoCaudalKgH)}</td>
                   <td className="num">{formatearTranscurrido(orden.estado, orden.fechaInicioCarga)}</td>
                   <td className="num">{formatearEta(orden.estado, orden.etaMinutos)}</td>
-                  <td>
+                  <td className="centro">
                     {orden.estado === 4 ? (
                       <Link
                         to={`/ordenes/${orden.orderNumber}/conciliacion`}
@@ -237,7 +245,7 @@ export function OrdersListPage() {
                       '—'
                     )}
                   </td>
-                  <td>
+                  <td className="centro">
                     <Link
                       to={`/ordenes/${orden.orderNumber}/alarmas`}
                       state={{ volver: construirUrlListado() }}

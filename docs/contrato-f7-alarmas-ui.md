@@ -114,15 +114,19 @@ ambos en 24 horas explícitas, coinciden con la hora real); "Volver a
 
 **TP34 queda verificado para el alcance probado.**
 
+## Evidencia manual del usuario — tercera ronda (2026-10-23)
+
+Confirmado en navegador real: "Volver a órdenes" desde Alarmas
+conserva **filtro, página y ordenamiento** (cierra el límite que
+había quedado sin confirmar en la ronda anterior).
+
 ## Límites aceptados (no ocultos)
 
-- Página y ordenamiento al volver desde Alarmas **no se confirmaron**
-  en esta prueba (solo el filtro).
 - Doble envío (botón deshabilitado mientras una aceptación está en
   vuelo) y conservación del texto de observación ante un error no se
-  reconfirmaron visualmente en esta ronda final (sí se implementaron
-  y se razonaron por construcción; 409/403 se verificaron por API en
-  una ronda anterior, no en navegador en esta última).
+  reconfirmaron visualmente (sí se implementaron y se razonaron por
+  construcción; 409/403 se verificaron por API en una ronda anterior,
+  no en navegador).
 - `AlarmaResponse.fechaDisparo`/`fechaAceptacion` siguen sin offset
   explícito en el backend (a diferencia de `OrdenResumenResponse`,
   corregido en TP32/TP33). El frontend agrega el offset fijo
@@ -132,10 +136,8 @@ ambos en 24 horas explícitas, coinciden con la hora real); "Volver a
 - Sin framework de pruebas automatizadas de UI instalado; la
   verificación de esta unidad es manual, no automatizada.
 
-F7 sigue abierta y **no se cierra en esta entrada**: con TP31-TP35
-verificados para su alcance probado, queda pendiente la revisión
-visual general del rediseño del frontend que no es parte de esos
-requisitos (header en mobile, login, estados de carga/error/vacío del
-inicio, panel de pendientes, tabla de recientes, tabla de órdenes
-angosta - ver checkpoints anteriores) y los límites de esta misma
-lista.
+F7 sigue abierta y **no se cierra en esta entrada**: con TP30-TP35
+verificados para su alcance probado, queda pendiente la comprobación
+de carga/error/vacío del inicio (plan en
+`docs/contrato-f7-diseno-ui.md`) y la revisión de la tabla de
+lecturas recientes.
