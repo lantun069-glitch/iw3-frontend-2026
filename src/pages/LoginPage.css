@@ -3,61 +3,79 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: var(--space-4);
+  background-color: var(--color-bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.login-brand {
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 1.1rem;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: var(--space-1);
   width: 100%;
-  max-width: 320px;
-  padding: 1.5rem;
-  border: 1px solid #d0d0d0;
-  border-radius: 8px;
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .login-form h1 {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.25rem;
+  margin: 0 0 var(--space-3) 0;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .login-form label {
   font-size: 0.85rem;
-  margin-top: 0.5rem;
+  font-weight: 600;
+  margin-top: var(--space-3);
 }
 
 .login-form input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #b0b0b0;
-  border-radius: 4px;
+  padding: 0.55rem var(--space-3);
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
 }
 
 .login-form input[aria-invalid='true'] {
-  border-color: #c0392b;
+  border-color: var(--color-danger);
 }
 
-.login-form button {
-  margin-top: 1rem;
-  padding: 0.6rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.login-form button:disabled {
-  cursor: default;
-  opacity: 0.7;
+.login-submit {
+  margin-top: var(--space-4);
+  width: 100%;
 }
 
 .campo-error {
-  color: #c0392b;
+  color: var(--color-danger);
   font-size: 0.8rem;
-  margin: 0.15rem 0 0 0;
+  margin: var(--space-1) 0 0 0;
 }
 
 .login-error {
-  color: #c0392b;
+  color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
   font-size: 0.85rem;
-  margin: 0.75rem 0 0 0;
+  margin: var(--space-3) 0 0 0;
 }

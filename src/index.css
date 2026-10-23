@@ -1,7 +1,36 @@
-/* Estilos globales minimos (F7, primera unidad): una sola solucion de
-   estilos para todo el proyecto (CSS simple, sin biblioteca de UI
-   completa). Cada pantalla tiene su propio archivo .css con las
-   clases que usa; esto solo fija el reset basico y la tipografia. */
+/* Estilos globales (F7): variables de diseno (color, espaciado,
+   tipografia) y clases compartidas (botones, foco, utilidades) para
+   que las tres pantallas se vean como un mismo sistema sin agregar
+   una biblioteca de componentes. Cada pantalla conserva su propio
+   .css solo para layout especifico. */
+
+:root {
+  --color-bg: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e2e5ea;
+  --color-text: #1a1d23;
+  --color-text-muted: #5a6270;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-contrast: #ffffff;
+  --color-danger: #c0392b;
+  --color-danger-bg: #fdecea;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Avenir, Helvetica, Arial, sans-serif;
+}
 
 * {
   box-sizing: border-box;
@@ -9,7 +38,160 @@
 
 body {
   margin: 0;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #1a1a1a;
-  background-color: #fafafa;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Utilidad de accesibilidad: visible solo para lectores de pantalla,
+   salvo que reciba foco (ver .skip-link, que la usa para aparecer
+   recien cuando se navega con teclado). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -3rem;
+  z-index: 100;
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* Foco visible consistente en toda la app, sin depender del estilo
+   nativo del navegador (que varia entre Chrome/Firefox/Safari). */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Botones compartidos por las tres pantallas (login, bienvenida,
+   ordenes) para que el estilo sea uno solo, no uno por pagina. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.55rem 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-bg);
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+/* Etiquetas de estado (1-4), compartidas por la tabla de ordenes y el
+   resumen de inicio - mismo color en los dos lugares (ver
+   src/domain/estados.ts, que fija el mismo color en hex para el
+   grafico). */
+.badge-estado {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-estado-1 {
+  background-color: #eef1f5;
+  color: #475467;
+}
+
+.badge-estado-2 {
+  background-color: #e0ecff;
+  color: var(--color-primary-hover);
+}
+
+.badge-estado-3 {
+  background-color: #fdf2e0;
+  color: #9a6400;
+}
+
+.badge-estado-4 {
+  background-color: #e3f5e8;
+  color: #1a7f45;
+}
+
+/* Mensajes de estado de carga (error/vacio), compartidos por las
+   pantallas que consultan al backend. */
+.state-error {
+  color: var(--color-danger);
+  background-color: var(--color-danger-bg);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.state-empty {
+  color: var(--color-text-muted);
+  padding: var(--space-6);
+  text-align: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 }

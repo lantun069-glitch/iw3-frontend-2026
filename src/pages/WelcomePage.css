@@ -1,13 +1,189 @@
 .welcome-page {
-  max-width: 480px;
-  margin: 3rem auto;
-  padding: 1.5rem;
-  text-align: center;
+  margin: var(--space-8) 0;
+  padding: 0 var(--space-6);
 }
 
-.welcome-page button {
-  margin-top: 1.5rem;
-  padding: 0.6rem 1.2rem;
+.welcome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.welcome-header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.welcome-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.welcome-actualizado {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+/* Tarjetas de arriba: compactas, cinco en una fila en escritorio */
+.welcome-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.welcome-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-text-muted);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.welcome-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.welcome-card-valor {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.welcome-card-etiqueta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Centro: grafico (mas ancho) + pendientes, dos columnas en escritorio */
+.welcome-middle {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  align-items: start;
+}
+
+.welcome-panel {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.welcome-panel h2 {
+  margin: 0 0 var(--space-1) 0;
   font-size: 1rem;
-  cursor: pointer;
+}
+
+.welcome-panel-sub {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.welcome-chart {
+  margin-top: var(--space-2);
+}
+
+.welcome-pendientes {
+  list-style: none;
+  margin: var(--space-3) 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.welcome-pendiente {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.welcome-pendiente:hover {
+  background-color: var(--color-border);
+}
+
+.welcome-pendiente-valor {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 2ch;
+}
+
+.welcome-pendiente-etiqueta {
+  font-size: 0.85rem;
+  color: var(--color-text);
+}
+
+/* Abajo: tabla de lecturas mas recientes */
+.welcome-recientes-wrap {
+  overflow-x: auto;
+}
+
+.welcome-recientes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-top: var(--space-2);
+}
+
+.welcome-recientes-table th,
+.welcome-recientes-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.welcome-recientes-table th {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.welcome-recientes-table tbody tr:hover {
+  background-color: var(--color-bg);
+}
+
+.welcome-recientes-table a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.welcome-recientes-table a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .welcome-middle {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .welcome-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

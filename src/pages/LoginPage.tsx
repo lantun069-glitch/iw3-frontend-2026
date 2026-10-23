@@ -45,44 +45,47 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <form className="login-form" onSubmit={handleSubmit} noValidate>
-        <h1>Iniciar sesión</h1>
+      <div className="login-card">
+        <span className="login-brand">IW3 · Órdenes</span>
+        <form className="login-form" onSubmit={handleSubmit} noValidate>
+          <h1>Iniciar sesión</h1>
 
-        <label htmlFor="username">Usuario</label>
-        <input
-          id="username"
-          name="username"
-          autoComplete="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={loginLoading}
-          aria-invalid={Boolean(camposInvalidos.username)}
-        />
-        {camposInvalidos.username && <p className="campo-error">{camposInvalidos.username}</p>}
+          <label htmlFor="username">Usuario</label>
+          <input
+            id="username"
+            name="username"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            disabled={loginLoading}
+            aria-invalid={Boolean(camposInvalidos.username)}
+          />
+          {camposInvalidos.username && <p className="campo-error">{camposInvalidos.username}</p>}
 
-        <label htmlFor="password">Contraseña</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loginLoading}
-          aria-invalid={Boolean(camposInvalidos.password)}
-        />
-        {camposInvalidos.password && <p className="campo-error">{camposInvalidos.password}</p>}
+          <label htmlFor="password">Contraseña</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={loginLoading}
+            aria-invalid={Boolean(camposInvalidos.password)}
+          />
+          {camposInvalidos.password && <p className="campo-error">{camposInvalidos.password}</p>}
 
-        {loginError && (
-          <p className="login-error" role="alert">
-            {loginError}
-          </p>
-        )}
+          {loginError && (
+            <p className="login-error" role="alert">
+              {loginError}
+            </p>
+          )}
 
-        <button type="submit" disabled={loginLoading}>
-          {loginLoading ? 'Ingresando…' : 'Ingresar'}
-        </button>
-      </form>
+          <button type="submit" className="btn btn-primary login-submit" disabled={loginLoading}>
+            {loginLoading ? 'Ingresando…' : 'Ingresar'}
+          </button>
+        </form>
+      </div>
     </main>
   )
 }
