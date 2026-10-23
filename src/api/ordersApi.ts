@@ -153,3 +153,57 @@ export async function obtenerOrdenesRecientes(limite: number, signal?: AbortSign
   const listado = await listarOrdenes({ size: limite, sort: 'fechaUltimaLectura,desc' }, signal)
   return listado.content.filter((orden) => orden.fechaUltimaLectura !== null)
 }
+
+/**
+ * Alarma de temperatura (TP28/TP29/TP34, F6/F7). Coincide con
+ * AlarmaResponse del backend. temperaturaC/umbralAplicado son los
+ * valores CONGELADOS al momento del disparo, no la configuración
+ * global vigente ahora (que puede haber cambiado después). A
+ * diferencia de OrdenResumen, fechaDisparo/fechaAceptacion llegan
+ * SIN offset (ver docs/contrato-f7-alarmas-ui.md: AlarmaResponse no
+ * se actualizó como OrdenResumenResponse en TP32/TP33) - no
+ * interpretar con `new Date(...)` directo.
+ */
+export interface Alarma {
+  id: number
+  orderNumber: number
+  fechaDisparo: string
+  temperaturaC: number
+  umbralAplicado: number
+  aceptada: boolean
+  fechaAceptacion: string | null
+  usuarioAceptacion: string | null
+  observacion: string | null
+}
+
+/**
+ * GET /api/v1/orders/{orderNumber}/alarmas (backend, F6, sin cambios
+ * para esta unidad). Todas las alarmas de la orden, pendientes y
+ * aceptadas, sin filtrar por estado de la orden.
+ */
+export async function obtenerAlarmas(orderNumber: number, signal?: AbortSignal): Promise<Alarma[]> {
+  const response = await httpClient.get<Alarma[]>(`/api/v1/orders/${orderNumber}/alarmas`, { signal })
+  return response.data
+}
+
+/**
+ * POST /api/v1/orders/{orderNumber}/alarmas/{idAlarma}/aceptacion
+ * (backend, F6, sin cambios). observacion es el único campo que
+ * manda el cliente (máx. 500 caracteres, ya validado por el
+ * backend); usuario y fecha/hora los determina el servidor - nunca
+ * se envían desde el frontend. Devuelve la alarma ya actualizada, sin
+ * necesidad de otro GET para refrescarla.
+ */
+export async function aceptarAlarma(
+  orderNumber: number,
+  idAlarma: number,
+  observacion: string,
+  signal?: AbortSignal,
+): Promise<Alarma> {
+  const response = await httpClient.post<Alarma>(
+    `/api/v1/orders/${orderNumber}/alarmas/${idAlarma}/aceptacion`,
+    observacion.trim() === '' ? {} : { observacion },
+    { signal },
+  )
+  return response.data
+}

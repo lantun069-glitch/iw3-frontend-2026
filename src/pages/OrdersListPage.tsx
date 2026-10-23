@@ -205,6 +205,7 @@ export function OrdersListPage() {
                 <th>Tiempo transcurrido</th>
                 <th>ETA</th>
                 <th>Conciliación</th>
+                <th>Alarmas</th>
               </tr>
             </thead>
             <tbody>
@@ -235,6 +236,15 @@ export function OrdersListPage() {
                     ) : (
                       '—'
                     )}
+                  </td>
+                  <td>
+                    <Link
+                      to={`/ordenes/${orden.orderNumber}/alarmas`}
+                      state={{ volver: construirUrlListado() }}
+                      className="btn-link"
+                    >
+                      Ver alarmas
+                    </Link>
                   </td>
                 </tr>
               ))}

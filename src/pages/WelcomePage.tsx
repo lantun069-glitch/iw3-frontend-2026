@@ -5,7 +5,7 @@ import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YA
 import { obtenerOrdenesRecientes, obtenerResumenEstados, type OrdenResumen, type ResumenEstados } from '../api/ordersApi'
 import { EstadoBadge } from '../components/EstadoBadge'
 import { ESTADOS, ESTADO_COLORS, ESTADO_LABELS } from '../domain/estados'
-import { calcularPorcentaje, formatearEta, formatearFecha } from '../utils/formato'
+import { calcularPorcentaje, formatearEta, formatearFecha, formatearFechaHora } from '../utils/formato'
 import './WelcomePage.css'
 
 const RECIENTES_LIMITE = 5
@@ -86,7 +86,7 @@ export function WelcomePage() {
             {loading ? 'Actualizando…' : 'Actualizar'}
           </button>
           {actualizadoEn && (
-            <span className="welcome-actualizado">Actualizado: {actualizadoEn.toLocaleString('es-AR')}</span>
+            <span className="welcome-actualizado">Actualizado: {formatearFechaHora(actualizadoEn)}</span>
           )}
         </div>
       </div>

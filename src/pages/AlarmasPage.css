@@ -1,0 +1,125 @@
+.alarmas-page {
+  margin: var(--space-8) 0;
+  padding: 0 var(--space-6);
+}
+
+.alarmas-header {
+  margin-bottom: var(--space-6);
+}
+
+.alarmas-volver {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  font-size: 0.85rem;
+}
+
+.alarmas-header h1 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.alarmas-cargando {
+  color: var(--color-text-muted);
+}
+
+.alarmas-bloque {
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+}
+
+.alarmas-bloque:last-child {
+  margin-bottom: 0;
+}
+
+.alarmas-bloque h2 {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 1rem;
+}
+
+.alarmas-nota {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.alarmas-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.alarmas-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: space-between;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid #9a6400;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+}
+
+.alarmas-item-aceptada {
+  border-top-color: #1a7f45;
+}
+
+.alarmas-item-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 220px;
+}
+
+.alarmas-item-temp {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.alarmas-item-detalle {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.alarmas-item-accion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 220px;
+  flex: 1 1 260px;
+}
+
+.alarmas-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.alarmas-item-accion textarea {
+  padding: 0.5rem var(--space-3);
+  font-size: 0.9rem;
+  font-family: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.alarmas-item-accion .btn {
+  align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+  .alarmas-item {
+    flex-direction: column;
+  }
+}

@@ -7,8 +7,45 @@ export function formatearNumero(valor: number | null): string {
   return valor === null ? 'Sin datos' : valor.toLocaleString('es-AR')
 }
 
+/**
+ * Hora explicita de 24 horas para toda fecha/hora mostrada en la UI.
+ * `toLocaleString('es-AR')` SIN opciones usa 12 horas sin indicador
+ * am/pm (confirmado con un valor real: "14:29:44" se mostraba
+ * "02:29:44", no es un bug de interpretacion de zona horaria - el
+ * dato ya llega/se interpreta correcto, toISOString lo confirma; es
+ * un formato ambiguo del locale). `hour12:false` tampoco alcanza: en
+ * es-AR da "24:05:00" a la medianoche. `hourCycle:'h23'` es el unico
+ * que da siempre 00-23.
+ */
+const OPCIONES_FECHA_HORA: Intl.DateTimeFormatOptions = { hourCycle: 'h23' }
+
 export function formatearFecha(valor: string | null): string {
-  return valor === null ? 'Sin datos' : new Date(valor).toLocaleString('es-AR')
+  return valor === null ? 'Sin datos' : new Date(valor).toLocaleString('es-AR', OPCIONES_FECHA_HORA)
+}
+
+/**
+ * TP34 (F7): formatea una fecha de AlarmaResponse (fechaDisparo/
+ * fechaAceptacion), que a diferencia de OrdenResumenResponse llega
+ * SIN offset (ver docs/contrato-f7-alarmas-ui.md - no se corrigió
+ * como en TP32/TP33, limitación de backend informada, no corregida
+ * en esta unidad). Se le agrega el offset fijo de la zona del
+ * backend (America/Argentina/Cordoba, -03:00 todo el año, sin
+ * horario de verano) antes de interpretarla - nunca se asume la zona
+ * del navegador. Si el backend alguna vez empieza a mandar offset
+ * propio, este agregado quedaria mal (doble offset) - ver el
+ * contrato para la condicion de retiro de este workaround.
+ */
+export function formatearFechaAlarma(valor: string | null): string {
+  if (valor === null) {
+    return 'Sin datos'
+  }
+  const conOffset = /[+-]\d{2}:\d{2}$/.test(valor) ? valor : `${valor}-03:00`
+  return new Date(conOffset).toLocaleString('es-AR', OPCIONES_FECHA_HORA)
+}
+
+/** Para fechas que ya son `Date` (ej. "Actualizado:" del inicio), mismo criterio de 24 horas explícitas que el resto de la UI. */
+export function formatearFechaHora(valor: Date): string {
+  return valor.toLocaleString('es-AR', OPCIONES_FECHA_HORA)
 }
 
 /**

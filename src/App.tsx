@@ -1,6 +1,7 @@
 import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
 import { ProtectedRoute } from './auth/ProtectedRoute'
+import { AlarmasPage } from './pages/AlarmasPage'
 import { ConciliacionPage } from './pages/ConciliacionPage'
 import { LoginPage } from './pages/LoginPage'
 import { OrdersListPage } from './pages/OrdersListPage'
@@ -33,6 +34,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ConciliacionPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ordenes/:orderNumber/alarmas"
+            element={
+              <ProtectedRoute>
+                <AlarmasPage />
               </ProtectedRoute>
             }
           />
