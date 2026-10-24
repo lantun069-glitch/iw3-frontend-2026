@@ -52,6 +52,20 @@ queda vacío por defecto (usa el proxy de desarrollo); se completa con
 la URL real del backend para otros entornos (VM, configuración
 pendiente — no se usa Vercel/Netlify, ver `docs/contrato-f7-login.md`).
 
+## Build local sin el proxy de desarrollo (F8.1)
+
+```bash
+VITE_API_BASE_URL=http://localhost:8080 npm run build
+npm run preview -- --port 4173 --strictPort
+```
+
+Reproducibilidad local del build junto al backend, requisitos, variables
+sin secretos y una observación de CORS de un ensayo local con orígenes
+distintos (pausada, no es un defecto confirmado del despliegue real -
+la topología de la VM todavía debe acordarse con el usuario): ver
+`docs/f8-1-reproducibilidad-local.md` en el repositorio del backend
+(`iw3-backend-sanitized`).
+
 ## Estado
 
 Primera unidad de F7 (login y sesión protegida) implementada. Ver
