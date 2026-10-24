@@ -159,7 +159,7 @@ export function WelcomePage() {
               </div>
             </section>
 
-            <section className="welcome-panel">
+            <section className="welcome-panel welcome-panel-pendientes">
               <h2>Pendientes del circuito</h2>
               <ul className="welcome-pendientes">
                 <li>

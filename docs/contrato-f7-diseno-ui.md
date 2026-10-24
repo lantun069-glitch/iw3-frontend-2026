@@ -273,3 +273,23 @@ backend real (mismos nombres de campo). **Fue puramente una
 simulación**, nunca evidencia contra el backend real. Retirado y
 backend real restaurado con la misma configuración (incluido el SMTP
 local) tras la comprobación visual de arriba.
+
+## Evidencia manual del usuario — espaciado de "Pendientes del circuito" (2026-10-23)
+
+Ajuste solo de CSS/JSX (`WelcomePage.css`, `WelcomePage.tsx`, rama
+`feature/f7-inicio-espaciado` desde `develop`): se quitó
+`align-items: start` de `.welcome-middle` para que el `stretch` por
+defecto de la grilla iguale la altura de "Pendientes del circuito"
+con "Órdenes por estado", y se agregó la clase
+`welcome-panel-pendientes` (flex-column, con la lista interna en
+`flex:1; justify-content: space-evenly`) para repartir sus dos
+opciones con espacio equilibrado dentro de esa altura ganada. Sin
+cambiar textos, cantidades, enlaces ni comportamiento; sin contenido
+ni dependencias nuevas.
+
+**Confirmado por capturas del usuario:** en escritorio, ambos paneles
+quedan alineados en altura; en ventana angosta, los paneles se
+mantienen apilados sin espacio sobrante (la grilla pasa a una columna
+y el `stretch` no tiene efecto entre filas distintas, así que la
+altura vuelve a ser automática por contenido, sin necesidad de una
+media query adicional para este caso).

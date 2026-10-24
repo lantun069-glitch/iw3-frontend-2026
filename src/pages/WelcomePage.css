@@ -66,13 +66,17 @@
   color: var(--color-text-muted);
 }
 
-/* Centro: grafico (mas ancho) + pendientes, dos columnas en escritorio */
+/* Centro: grafico (mas ancho) + pendientes, dos columnas en escritorio.
+   Sin "align-items: start": el stretch por defecto de la grilla iguala
+   la altura de ambos paneles a la del mas alto (el del grafico). En
+   movil la grilla pasa a una columna (ver media query mas abajo), cada
+   panel ocupa su propia fila y el stretch no tiene efecto - la altura
+   vuelve a ser automatica por contenido. */
 .welcome-middle {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: var(--space-4);
   margin-bottom: var(--space-6);
-  align-items: start;
 }
 
 .welcome-panel {
@@ -97,12 +101,22 @@
   margin-top: var(--space-2);
 }
 
+/* Al estirarse el panel (ver .welcome-middle) sobra alto por repartir
+   entre sus dos opciones; en movil el panel no se estira y esta regla
+   no tiene espacio extra que distribuir, por lo que no cambia nada. */
+.welcome-panel-pendientes {
+  display: flex;
+  flex-direction: column;
+}
+
 .welcome-pendientes {
   list-style: none;
   margin: var(--space-3) 0 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  justify-content: space-evenly;
   gap: var(--space-3);
 }
 
